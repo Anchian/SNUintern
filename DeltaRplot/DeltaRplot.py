@@ -130,8 +130,6 @@ class ExampleAnalysis(Module):
 
 
 
-
-
 parser = argparse.ArgumentParser(description='WRTau NanoGen')
 parser.add_argument('-d', dest='directory',default="")
 parser.add_argument('-f', dest='singlefile',default="")
