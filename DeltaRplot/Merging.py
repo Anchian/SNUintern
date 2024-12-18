@@ -262,8 +262,6 @@ canvas_WR2000.Write("canvas_WR2000")
 canvas_WR4000.Write("canvas_WR4000")
 
 
-
-
 output_file.Close()
 
 
