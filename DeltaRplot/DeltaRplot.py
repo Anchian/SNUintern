@@ -115,7 +115,7 @@ class ExampleAnalysis(Module):
                 children_indices = [i for i, p in enumerate(gen_parts) if p.genPartIdxMother == idx]
                 
                 # 자식이 두 개의 쿼크인지 확인
-                quark_indices = [i for i in children_indices if abs(gen_parts[i].pdgId) in [1, 2, 3, 4, 5, 6]]  # u, d, s, c, b, gluon
+                quark_indices = [i for i in children_indices if abs(gen_parts[i].pdgId) in [1, 2, 3, 4, 5, 6]]  # u, d, s, c, b, t
                 
                 if len(quark_indices) >= 2:
                     # 두 쿼크의 Delta R 계산
