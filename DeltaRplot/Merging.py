@@ -202,13 +202,23 @@ def draw_histograms(canvas, hists, title):
     
     legend.Draw()
     canvas.Update()
+
+## 각 샘플 갯수 다르므로 noramlization
+
 # WR1000 그룹 히스토그램 그리기
+combined_W1000N100.Scale(1/combined_W1000N100.Integral())
+combined_W1000N500.Scale(1/combined_W1000N500.Integral())
+combined_W1000N900.Scale(1/combined_W1000N900.Integral())
 draw_histograms(
     canvas_WR1000, 
     [combined_W1000N100, combined_W1000N500, combined_W1000N900], 
     "WR1000 Comparison; Delta R; Events"
 )
 
+
+combined_W2000N100.Scale(1/combined_W2000N100.Integral())
+combined_W2000N1000.Scale(1/combined_W2000N1000.Integral())
+combined_W2000N1900.Scale(1/combined_W2000N1900.Integral())
 # WR2000 그룹 히스토그램 그리기
 draw_histograms(
     canvas_WR2000, 
@@ -216,7 +226,11 @@ draw_histograms(
     "WR2000 Comparison; Delta R; Events"
 )
 
+
 # WR4000 그룹 히스토그램 그리기
+combined_W4000N100.Scale(1/combined_W4000N100.Integral())
+combined_W4000N2000.Scale(1/combined_W4000N2000.Integral())
+combined_W4000N3900.Scale(1/combined_W4000N3900.Integral())
 draw_histograms(
     canvas_WR4000, 
     [combined_W4000N100, combined_W4000N2000, combined_W4000N3900], 
@@ -225,17 +239,10 @@ draw_histograms(
 
 # 저장 및 출력
 
-combined_W1000N100.Scale(1/891402)
-combined_W1000N500.Scale(1/1048638)
-combined_W1000N900.Scale(1/1161852)
 
-combined_W2000N100.Scale(1/899118)
-combined_W2000N1000.Scale(1/1164312)
-combined_W2000N1900.Scale(1/1201905)
 
-combined_W4000N100.Scale(1/901584)
-combined_W4000N2000.Scale(1/450462)
-combined_W4000N3900.Scale(1/1202802)
+
+
 
 output_file.cd()
 combined_W1000N100.Write()
@@ -253,6 +260,9 @@ combined_W4000N3900.Write()
 canvas_WR1000.Write("canvas_WR1000")
 canvas_WR2000.Write("canvas_WR2000")
 canvas_WR4000.Write("canvas_WR4000")
+
+
+
 
 output_file.Close()
 
