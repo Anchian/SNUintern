@@ -32,7 +32,7 @@ def build_tree(gen_parts):
     index_to_node = {}
     # 노드 초기화
     for idx, part in enumerate(gen_parts):
-        node = {"pdgId": part["pdgId"], "parents": [], "children": []}
+        node = {"pdgId": part["pdgId"], "parents": [], "children": [], "eta": part["eta"], "phi": part["phi"]}
         index_to_node[idx] = node
         tree[idx] = node
 
@@ -107,24 +107,32 @@ class ExampleAnalysis(Module):
         self.addObject(ROOT.TH1F("deltaR_dist", "DeltaR Distribution between Two Quarks", 50, 0, 5))
 
     def analyze(self, event):
-        gen_parts = Collection(event, "GenPart")
-        
-        for idx, part in enumerate(gen_parts):
-            # Heavy_neutrino 찾기
-            if part.pdgId == 9900016 and isHardProcess(part):  # Hard Process + PDG ID
-                children_indices = [i for i, p in enumerate(gen_parts) if p.genPartIdxMother == idx]
-                
-                # 자식이 두 개의 쿼크인지 확인
-                quark_indices = [i for i in children_indices if abs(gen_parts[i].pdgId) in [1, 2, 3, 4, 5, 6]]  # u, d, s, c, b, t
-                
-                if len(quark_indices) >= 2:
-                    # 두 쿼크의 Delta R 계산
-                    idx_a, idx_b = quark_indices[0], quark_indices[1]
-                    quark_a, quark_b = gen_parts[idx_a], gen_parts[idx_b]
-                    delta_r=deltaR(quark_a, quark_b)
+        genparts = Collection(event, "GenPart")
+        roots = build_tree(genparts)
+
+    # 트리 구조에서 루트부터 탐색
+        for root in roots:
+            # Heavy neutrino 찾기 (루트가 직접 9900016인지 확인)
+            if root["pdgId"] == 9900016 :
+                # 자식 노드 중 쿼크 찾기
+                quark_nodes = [child for child in root["children"] if abs(child["pdgId"]) in [1, 2, 3, 4, 5, 6]]  # u, d, s, c, b, t
+
+                if len(quark_nodes) >= 2:
+                    # 첫 번째와 두 번째 쿼크의 Delta R 계산
+                    quark_a, quark_b = quark_nodes[0], quark_nodes[1]
+                                # Delta R 직접 계산
+                    delta_eta = quark_a["eta"] - quark_b["eta"]
+                    delta_phi = quark_a["phi"] - quark_b["phi"]
+                    # |Delta phi| 값 조정
+                    if delta_phi > 3.14159:
+                        delta_phi -= 2 * 3.14159
+                    elif delta_phi < -3.14159:
+                        delta_phi += 2 * 3.14159
+
+                    delta_r = (delta_eta**2 + delta_phi**2)**0.5
                     # 히스토그램에 Delta R 추가
                     self.deltaR_dist.Fill(delta_r)
-        
+
         return True
 
 
