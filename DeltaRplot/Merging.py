@@ -261,6 +261,9 @@ canvas_WR1000.Write("canvas_WR1000")
 canvas_WR2000.Write("canvas_WR2000")
 canvas_WR4000.Write("canvas_WR4000")
 
+canvas_WR1000.SaveAs("canvas_WR1000.png")
+canvas_WR2000.SaveAs("canvas_WR2000.png")
+canvas_WR4000.SaveAs("canvas_WR4000.png")
 
 output_file.Close()
 
