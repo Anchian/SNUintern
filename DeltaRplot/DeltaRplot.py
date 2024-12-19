@@ -117,6 +117,7 @@ class ExampleAnalysis(Module):
                 # 자식 노드 중 쿼크 찾기
                 quark_nodes = [child for child in root["children"] if abs(child["pdgId"]) in [1, 2, 3, 4, 5, 6]]  # u, d, s, c, b, t
 
+
                 if len(quark_nodes) >= 2:
                     # 첫 번째와 두 번째 쿼크의 Delta R 계산
                     quark_a, quark_b = quark_nodes[0], quark_nodes[1]
